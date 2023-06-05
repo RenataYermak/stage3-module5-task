@@ -1,4 +1,5 @@
 dependencies {
     implementation project(':module-service')
+    implementation project(':module-repository')
     implementation "com.github.java-json-tools:json-patch:$jsonPatchVersion"
 }

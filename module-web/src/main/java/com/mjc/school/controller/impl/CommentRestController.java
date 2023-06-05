@@ -1,9 +1,12 @@
 package com.mjc.school.controller.impl;
 
 import com.mjc.school.controller.CommentController;
+import com.mjc.school.repository.model.Comment;
 import com.mjc.school.service.CommentService;
 import com.mjc.school.service.dto.CommentRequestDto;
 import com.mjc.school.service.dto.CommentResponseDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/comments")
+@Api(produces = "application/json", value = "Operations for creating, updating, retrieving and deleting comment in the application")
 public class CommentRestController implements CommentController {
 
     private final CommentService commentService;
@@ -33,8 +37,9 @@ public class CommentRestController implements CommentController {
     public CommentRestController(CommentService commentService) {
         this.commentService = commentService;
     }
-    
+
     @GetMapping
+    @ApiOperation(value = "View all comments", response = List.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved all comment"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -51,6 +56,7 @@ public class CommentRestController implements CommentController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
+    @ApiOperation(value = "Retrieve specific comment with the supplied id", response = Comment.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved the comment with the supplied id"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -65,6 +71,7 @@ public class CommentRestController implements CommentController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @ApiOperation(value = "Create a piece of comment", response = Comment.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully created a piece of comment"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -78,7 +85,8 @@ public class CommentRestController implements CommentController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
+    @ApiOperation(value = "Update a piece of comment information", response = Comment.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated comment information"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -94,8 +102,9 @@ public class CommentRestController implements CommentController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Deletes specific comment with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully deletes the specific comment"),
+            @ApiResponse(code = 204, message = "Successfully deletes the specific comment"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
@@ -104,8 +113,9 @@ public class CommentRestController implements CommentController {
     public void deleteById(@PathVariable("id") Long id) {
         commentService.deleteById(id);
     }
-    
+
     @GetMapping
+    @ApiOperation(value = "Retrieve comment by news id", response = Comment.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved comment"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

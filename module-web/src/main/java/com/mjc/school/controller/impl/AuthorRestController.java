@@ -1,10 +1,12 @@
 package com.mjc.school.controller.impl;
 
 import com.mjc.school.controller.AuthorController;
+import com.mjc.school.repository.model.Author;
 import com.mjc.school.service.AuthorService;
 import com.mjc.school.service.dto.AuthorRequestDto;
 import com.mjc.school.service.dto.AuthorResponseDto;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +39,7 @@ public class AuthorRestController implements AuthorController {
     }
 
     @GetMapping
+    @ApiOperation(value = "View all authors", response = List.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved all author"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -53,6 +56,7 @@ public class AuthorRestController implements AuthorController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
+    @ApiOperation(value = "Retrieve specific author with the supplied id", response = Author.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved the author with the supplied id"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -67,6 +71,7 @@ public class AuthorRestController implements AuthorController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @ApiOperation(value = "Create a piece of author", response = Author.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully created a piece of author"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -80,7 +85,8 @@ public class AuthorRestController implements AuthorController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
+    @ApiOperation(value = "Update a piece of author information", response = Author.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated author information"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -96,8 +102,9 @@ public class AuthorRestController implements AuthorController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Deletes specific author with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully deletes the specific author"),
+            @ApiResponse(code = 204, message = "Successfully deletes the specific author"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
@@ -108,6 +115,7 @@ public class AuthorRestController implements AuthorController {
     }
 
     @GetMapping("/author/{id}")
+    @ApiOperation(value = "Retrieve author by news id", response = Author.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved author"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
